@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<style>
+.list {
+	list-style: none outside none;
+	margin: 10px 0 30px;
+    border: 3px solid #000;
+    border-radius: 15px;
+    padding: 10px
+}
+
+.item {
+	width: 200px;
+	padding: 5px 10px;
+	margin: 5px 0;
+	border: 2px solid #444;
+	border-radius: 5px;
+	background-color: #EA8A8A;
+
+	font-size: 1.1em;
+	font-weight: bold;
+	text-align: center;
+	/*cursor: move;*/
+}
+
+.handle { 
+  cursor: move;
+}
+
+
+body {
+	font-family: Verdana, 'Trebuchet ms', Tahoma;
+}
+
+.container {
+	width: 600px;
+	margin: auto;
+}
+
+h2 {
+	text-align: center;
+}
+
+.floatleft {
+  float: left;
+}
+
+
+
+</style>
+<body ng-app="sortableApp">
+
+<div ng-controller="sortableController" class="container">
+  
+  <primeira-lista lista="list1"></primeira-lista>
+  <segunda-lista lista="list2"></segunda-lista>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.4/angular.min.js"></script>
+  <script src="https://rawgithub.com/angular-ui/ui-sortable/master/src/sortable.js"></script>
+</div>
+
+
+<script>
+var myapp = angular.module('sortableApp', ['ui.sortable']);
+
+myapp.directive("primeiraLista", function() {
+  return {
+    template : '<div class="floatleft"><h2>Lista 1</h2><ul ui-sortable="draggable" ng-model="lista" class="list"><li ng-repeat="item in lista" class="item handle"><div class="myHandle"></div>{{item}}</li></ul></div>',
+    scope:{lista: '='} ,
+    controller: function ($scope) {
+    	$scope.draggable = {      	  	
+           connectWith: ".dropzone",
+           update:(e,ui) => { alert('chegou 2')}
+        };
+    }        
+  };
+});
+
+myapp.directive("segundaLista", function() {
+  return {
+    template : '<div class="floatleft" style="margin-left: 20px;"><h2>Lista 2</h2><ul ui-sortable="recebendo" ng-model="lista" class="list dropzone"><li ng-repeat="item in lista" class="item">{{item}}</li></ul></div>',
+    scope:{lista: '='} ,
+    controller: function ($scope) {
+    	 $scope.recebendo = {      	  	           
+           update:(e,ui) => { alert('chegou')}
+        };
+    }    
+  };
+});
+
+myapp.controller('sortableController', function ($scope) {
+  $scope.list1 = ['AAA', 'BBB', 'CCC'];
+  $scope.list2 = ['111', '222', '333'];
+});
+
+</script>
+
+</body>
+</html>
+
+  
